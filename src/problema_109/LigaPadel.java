@@ -7,37 +7,38 @@ import java.util.Scanner;
 
 public class LigaPadel {
 
-    private static void sumarPuntos(Map<String, Integer> _parejas, String _pareja, Integer _puntos, Integer _maxPuntos, String _ganador){
+    private static String[] entrada;
+    private static Map<String, Integer> parejas = new HashMap<>();
+    private static String ganador = null;
+    private static Integer maxPuntos = 0;
+    private static int totalPartidos = 0;
+
+    private static void sumarPuntos(String _pareja, int _puntos){
         int aux = 0;
-        if ( ! _parejas.containsKey(_pareja) ) {
-            _parejas.put(_pareja, _puntos);
+        if ( ! parejas.containsKey(_pareja) ) {
+            parejas.put(_pareja, _puntos);
         } else {
-            aux = _parejas.get(_pareja) + _puntos;
-            _parejas.remove(_pareja);
-            _parejas.put(_pareja, aux);
+            aux = parejas.get(_pareja) + _puntos;
+            parejas.remove(_pareja);
+            parejas.put(_pareja, aux);
         }
-        if ( _parejas.get(_pareja) > _maxPuntos ){
-            _ganador = _pareja;
-            _maxPuntos = _parejas.get(_pareja);
-        } else if (_parejas.get(_pareja) == _maxPuntos ) {
-            _ganador = "EMPATE";
+        if ( parejas.get(_pareja) > maxPuntos ){
+            ganador = _pareja;
+            maxPuntos = parejas.get(_pareja);
+        } else if (parejas.get(_pareja) == maxPuntos ) {
+            ganador = "EMPATE";
         }
     }
 
-    private static int partidosNoJugados(Map<String, Integer> _parejas, int _totalPartidos){
+    private static int partidosNoJugados(){
         int rondas = 0;
-        if ( _parejas.size() % 2 == 0)
-            rondas = _parejas.size() * 2 -2;
-        else rondas = _parejas.size() * 2;
+        if ( parejas.size() % 2 == 0)
+            rondas = parejas.size() * 2 -2;
+        else rondas = parejas.size() * 2;
 
-        return _parejas.size()/2 * rondas - _totalPartidos;
+        return parejas.size()/2 * rondas - totalPartidos;
     }
     public static void main(String[] args){
-        String[] entrada;
-        Map<String, Integer> parejas = new HashMap<>();
-        String ganador = null;
-        Integer maxPuntos = 0;
-        int totalPartidos = 0;
 
         Scanner sc = new Scanner(System.in).useDelimiter("\n");
         sc.useLocale(Locale.UK);
@@ -50,23 +51,24 @@ public class LigaPadel {
                         break;
                     } else {
                         // CÓMPUTO DE CATEGORÍA
-                        System.out.println(ganador.concat(" ").concat(String.valueOf(partidosNoJugados(parejas, totalPartidos))));
+                        System.out.println(ganador.concat(" ").concat(String.valueOf(partidosNoJugados())));
                         parejas = new HashMap<>();
                         ganador = null;
                         maxPuntos = 0;
                         totalPartidos = 0;
                     }
                 } else {
-                    System.out.println(entrada[0]);
+                    // imprimir categoría
+                    //System.out.println(entrada[0]);
                 }
             } else {
                 // partido
                 if ( Byte.parseByte(entrada[1]) > Byte.parseByte(entrada[3]) ) {
-                    sumarPuntos(parejas, entrada[0], 2, maxPuntos, ganador);
-                    sumarPuntos(parejas,entrada[2], 1, maxPuntos, ganador);
+                    sumarPuntos(entrada[0], 2);
+                    sumarPuntos(entrada[2], 1);
                 } else {
-                    sumarPuntos(parejas, entrada[2], 2,maxPuntos, ganador);
-                    sumarPuntos(parejas,entrada[0], 1, maxPuntos, ganador);
+                    sumarPuntos(entrada[2], 2);
+                    sumarPuntos(entrada[0], 1);
                 }
                 totalPartidos++;
             }

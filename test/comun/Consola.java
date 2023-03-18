@@ -30,8 +30,11 @@ public class Consola {
     }
 
     public void setEntrada(String[] _entrada) {
-        String cadena = String.join("\n", _entrada);
-        System.setIn(new ByteArrayInputStream(cadena.getBytes()));
+        //String cadena = String.join("\n", _entrada);
+        StringBuilder cadena = new StringBuilder();
+        for (String linea : _entrada)
+            cadena.append(linea.concat("\n"));
+        System.setIn(new ByteArrayInputStream(cadena.toString().getBytes()));
         
     }
 
