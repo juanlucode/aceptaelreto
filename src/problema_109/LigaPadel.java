@@ -8,35 +8,34 @@ import java.util.Scanner;
 public class LigaPadel {
 
     private static String[] entrada;
-    private static Map<String, Integer> parejas = new HashMap<>();
+    private static Map<String, Integer> parejas = new HashMap<>(2000);
     private static String ganador = null;
     private static Integer maxPuntos = 0;
     private static int totalPartidos = 0;
 
     private static void sumarPuntos(String _pareja, int _puntos){
         int aux = 0;
-        if ( ! parejas.containsKey(_pareja) ) {
-            parejas.put(_pareja, _puntos);
-        } else {
-            aux = parejas.get(_pareja) + _puntos;
+        if (  parejas.containsKey(_pareja) ) {
+            aux = parejas.get(_pareja);
             parejas.remove(_pareja);
-            parejas.put(_pareja, aux);
         }
-        if ( parejas.get(_pareja) > maxPuntos ){
+        _puntos += aux;
+        parejas.put(_pareja, _puntos);
+        if ( _puntos > maxPuntos ){
             ganador = _pareja;
-            maxPuntos = parejas.get(_pareja);
-        } else if (parejas.get(_pareja) == maxPuntos ) {
+            maxPuntos = _puntos;
+        } else if (_puntos == maxPuntos ) {
             ganador = "EMPATE";
         }
     }
 
-    private static int partidosNoJugados(){
+    private static int partidosNoJugados(int _numParejas){
         int rondas = 0;
-        if ( parejas.size() % 2 == 0)
-            rondas = parejas.size() * 2 -2;
-        else rondas = parejas.size() * 2;
+        if ( _numParejas % 2 == 0)
+            rondas = _numParejas * 2 -2;
+        else rondas = _numParejas * 2;
 
-        return parejas.size()/2 * rondas - totalPartidos;
+        return _numParejas/2 * rondas - totalPartidos;
     }
     public static void main(String[] args){
 
@@ -51,15 +50,12 @@ public class LigaPadel {
                         break;
                     } else {
                         // CÓMPUTO DE CATEGORÍA
-                        System.out.println(ganador.concat(" ").concat(String.valueOf(partidosNoJugados())));
-                        parejas = new HashMap<>();
+                        System.out.println(ganador.concat(" ").concat(String.valueOf(partidosNoJugados(parejas.size()))));
+                        parejas.clear();
                         ganador = null;
                         maxPuntos = 0;
                         totalPartidos = 0;
                     }
-                } else {
-                    // imprimir categoría
-                    //System.out.println(entrada[0]);
                 }
             } else {
                 // partido
