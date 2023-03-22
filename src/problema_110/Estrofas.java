@@ -38,7 +38,32 @@ public class Estrofas {
     }
 
     private static String analizarEstrofa(String[] estrofa) {
+        StringBuilder esquema = new StringBuilder();
+        String tipo;
 
-        return null;
+        switch (esquema.toString()){
+            case "AA":
+                tipo = "PAREADO";
+                break;
+            case "AaA":
+            case "ABA":
+            case "AbA":
+                tipo = "TERCETO";
+                break;
+            case "ABBA":
+                tipo = "CUARTETO";
+                break;
+            case "ABAB":
+                tipo = "CUARTETA";
+                break;
+            case "AAAA":
+                tipo = "CUADERNA VIA";
+                break;
+            default:
+                if ( esquema.length() == 4 && esquema.toString().matches(".b.b") )
+                    tipo = "SEGUIDILLA";
+                else tipo = "DESCONOCIDO";
+        }
+        return tipo;
     }
 }
