@@ -29,7 +29,7 @@ public class Estrofas {
             } else {
                 // VERSO
                 // INCLUIR A ESTROFA
-                estrofa[iVerso++] = entrada;
+                estrofa[iVerso++] = entrada.replace("[^a-zA-Z]", "").toLowerCase();
             }
         }
         sc.close();
@@ -37,9 +37,15 @@ public class Estrofas {
 
     }
 
+    private
     private static String analizarEstrofa(String[] estrofa) {
-        StringBuilder esquema = new StringBuilder();
-        String tipo;
+        StringBuilder esquema = new StringBuilder().append("A");
+        String tipo = "DESCONOCIDO";
+
+        switch ( estrofa.length ){
+            case 2:
+                if (estrofa[0].ch)
+        }
 
         switch (esquema.toString()){
             case "AA":
